@@ -36,8 +36,9 @@
     <Reference Include="App">
       <HintPath>..\App\bin\Debug\App.dll</HintPath>
     </Reference>
-    <Reference Include="cdn_api20171.net">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Comarch ERP XL 2017.1\cdn_api20171.net.dll</HintPath>
+    <Reference Include="cdn_api20171.net, Version=2017.1.0.0, Culture=neutral, PublicKeyToken=5179454a0b814fab, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\cdn_api20171.net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
