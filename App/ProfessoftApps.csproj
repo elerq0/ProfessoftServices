@@ -34,7 +34,7 @@
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Comarch ERP Optima\adodb.dll</HintPath>
+      <HintPath>..\DLL\adodb.dll</HintPath>
     </Reference>
     <Reference Include="cdn_api20171.net, Version=2017.1.0.0, Culture=neutral, PublicKeyToken=5179454a0b814fab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -43,7 +43,7 @@
     <Reference Include="ICDNLib, Version=2019.2.1.965, Culture=neutral, PublicKeyToken=5179454a0b814fab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Comarch ERP Optima\Interop\ICDNLib.dll</HintPath>
+      <HintPath>..\DLL\ICDNLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
