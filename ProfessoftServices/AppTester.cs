@@ -128,6 +128,8 @@ namespace ProfessoftServices
 
                 //=======================================================================================================================//
 
+                /*
+                
                 string serverNameSQL = @"SERVERNAME";
                 string databaseSQL = @"DATABASE";
                 string operSQL = "OPERATOR";
@@ -145,6 +147,8 @@ namespace ProfessoftServices
 
                 sql.Disconnect();
                 logFile.Write("Zamknięto połączenie z serwerem SQL");
+
+                */
 
                 //=======================================================================================================================//
 
