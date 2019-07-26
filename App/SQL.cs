@@ -7,9 +7,14 @@ namespace ProfessoftApps
     public class SQL
     {
         protected SqlConnection cnn;
-        public SQL(string serverName, string database, string userName, string pass)
+        public Boolean connected;
+        public SQL(string servername, string database, string username, string password, Boolean NT, string key)
         {
-            cnn = new SqlConnection("Data Source = " + serverName + "; Initial Catalog = " + database + "; User ID = " + userName + "; Password = " + pass);
+            if (!NT)
+                cnn = new SqlConnection("Data Source = " + servername + "; Initial Catalog = " + database + "; User ID = " + username + "; Password = " + password);
+            else
+                cnn = new SqlConnection("Data Source = " + servername + "; Initial Catalog = " + database + "; Integrated Security=true;");
+            connected = false;
         }
 
         public void Connect()
@@ -17,6 +22,7 @@ namespace ProfessoftApps
             try
             {
                 cnn.Open();
+                connected = true;
             }
             catch (SqlException)
             {
@@ -29,6 +35,7 @@ namespace ProfessoftApps
             try
             {
                 cnn.Close();
+                connected = false;
             }
             catch (SqlException)
             {

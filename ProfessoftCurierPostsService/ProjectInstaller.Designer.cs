@@ -1,4 +1,4 @@
-﻿namespace ProfessoftServices
+﻿namespace ProfessoftCurierPostsService
 {
     partial class ProjectInstaller
     {
@@ -38,9 +38,8 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.ServiceName = "ServiceTester";
-            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
-            this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
+            this.serviceInstaller1.DisplayName = "PRO_Przesyłki_Kurierskie";
+            this.serviceInstaller1.ServiceName = "ProCurierPostsService";
             // 
             // ProjectInstaller
             // 

@@ -4,14 +4,19 @@ namespace ProfessoftApps
 {
     public class Optima
     {
-        protected static CDNBase.Application application = null;
-        protected static CDNBase.ILogin login = null;
-        protected static CDNBase.AdoSession session = null;
+        protected CDNBase.Application application = null;
+        protected CDNBase.ILogin login = null;
+        protected CDNBase.AdoSession session = null;
         protected string path;
+
+        public int operatorID;
+        public string operatorKod;
+        public Boolean connected;
 
         public Optima(string path)
         {
             this.path = path;
+            connected = false;
         }
 
         public void Login(string oper, string pass, string company)
@@ -38,13 +43,18 @@ namespace ProfessoftApps
             try
             {
                 RefreshEnvironmentPath();
-                application = new CDNBase.Application();
+                application = new CDNBase.Application();                
                 application.LockApp(513, 5000, null, null, null, null);
                 login = application.Login(oper, pass, company, hPar[0], hPar[1], hPar[2], hPar[3], hPar[4], hPar[5], hPar[6], hPar[7], hPar[8], hPar[9], hPar[10], hPar[11], hPar[12], hPar[13], hPar[14], hPar[15], hPar[16], hPar[17]);
                 session = login.CreateSession();
+                operatorID = login.OperatorParam.ID;
+                operatorKod = login.OperatorParam.Akronim;
+                connected = true;
             }
             catch (Exception e)
             {
+                application.UnlockApp();
+                connected = false;
                 throw new Exception("Wystąpił błąd przy logowaniu do ERP Optima: " + e.Message);
             }
         }
@@ -58,45 +68,13 @@ namespace ProfessoftApps
                 application.UnlockApp();
                 application = null;
                 session = null;
+                connected = false;
             }
             catch (Exception e)
             {
                 throw new Exception("Wystąpił błąd przy wylogowywaniu z ERP Optima: " + e.Message);
             }
         }
-
-        /*
-        public void Login(string oper, string pass, string company)
-        {
-            try
-            {
-                RefreshEnvironmentPath();
-                login = new LoginService();
-                ModuleCollection mc = new ModuleCollection() { Module.KasaBankPlus, Module.Handel, Module.CRMPlus, Module.KsiegaHandlowaPlus, Module.KadryPlace };
-                login.Login(oper, pass, company, mc);
-                session = login.LoginInfo.CreateSession();
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Wystąpił błąd przy logowaniu do ERP Optima: " + e.Message);
-            }
-        }
-
-        public void LogOut()
-        {
-            try
-            {
-                RefreshEnvironmentPath();
-                login.Logout();
-                session = null;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Wystąpił błąd przy wylogowywaniu z ERP Optima: " + e.Message);
-            }
-        }
-        */
 
         public void Save()
         {
@@ -115,16 +93,67 @@ namespace ProfessoftApps
             }
         }
 
-        public CDNHeal.Kontrahent GetContractorByName(string name)
+        public CDNHeal.Kontrahent GetContractorByName(string code)
         {
-            CDNBase.ICollection kontrahenci = session.CreateObject("CDN.Kontrahenci", null);
-
-            foreach (CDNHeal.Kontrahent kontrahent in kontrahenci)
+            try
             {
-                if (kontrahent.Akronim.Equals(name.ToUpper()))
-                    return kontrahent;
+                return session.CreateObject("CDN.Kontrahenci").Item("Knt_Kod = " + code);
             }
-            throw new Exception("Nie znaleziono kontrahenta o akronimie: " + name);
+            catch (Exception)
+            {
+                throw new Exception("Nie znaleziono kontrahenta o akronimie: " + code);
+            }
+
+        }
+
+        public CDNHlmn.IDokumentHaMag GetDocumentHaMagByID(string trNID)
+        {
+            try
+            {
+                return session.CreateObject("CDN.DokumentyHaMag").Item("TrN_TrNId = " + trNID);
+            }
+            catch(Exception)
+            {
+                throw new Exception("Nie znaleziono dokkumentu HaMag o id: " + trNID);
+            }
+        }
+
+        public void AddOrEditAtributeDocumentHaMag(CDNHlmn.IDokumentHaMag doc, string code, string value)
+        {
+            Boolean found = false;
+            foreach(CDNTwrb1.IDokAtrybut atr in doc.Atrybuty)
+            {
+                if(atr.Kod.Equals(code))
+                {
+                    atr.Wartosc = value;
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found)
+            {
+                CDNTwrb1.IDefAtrybut defAtrybut = session.CreateObject("CDN.DefAtrybuty").Item("DeA_Kod = '" + code + "' and DeA_Typ = 4");
+                CDNTwrb1.IDokAtrybut atrybut = doc.Atrybuty.AddNew();
+                atrybut.DeAID = defAtrybut.ID;
+                atrybut.Wartosc = value;
+            }
+        }
+
+        public void CreateDefAtribute(string name, int format, int type)
+        {
+            try
+            {
+                CDNTwrb1.DefAtrybut defAtrybut = session.CreateObject("CDN.DefAtrybuty", null).AddNew();
+                defAtrybut.Kod = name;
+                defAtrybut.Nazwa = name;
+                defAtrybut.Format = format;
+                defAtrybut.Typ = type;
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Błąd przy tworzeniu definicji atrybutu " + e.Message);
+            }
         }
 
         private void RefreshEnvironmentPath()

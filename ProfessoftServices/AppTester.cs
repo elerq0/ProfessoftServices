@@ -88,6 +88,18 @@ namespace ProfessoftServices
                     throw new Exception(e.Message);
                 }
 
+                CDNHeal.Kontrahent kontrahent2;
+                try
+                {
+                    kontrahent2 = optima.GetContractorByName("Testowy trzeci");
+                    logFile.Write("Znaleziono kontrahenta " + kontrahent2.Akronim + " po nazwie");
+                }
+                catch(Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+
+
                 optima.GetContractorCollection().Delete(kontrahent);
                 logFile.Write("Usunięto kontrahenta: " + contractorName);
 
@@ -106,7 +118,7 @@ namespace ProfessoftServices
                 optima.LogOut();
                 logFile.Write("Wylogowano z ERP Optima");
 
-                
+
 
                 //=======================================================================================================================//
 

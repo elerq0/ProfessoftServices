@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Configuration.Install;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProfessoftServices
 {
@@ -14,11 +9,16 @@ namespace ProfessoftServices
         public ProjectInstaller()
         {
             InitializeComponent();
+            this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.User;
+            this.serviceProcessInstaller1.Password = null;
+            this.serviceProcessInstaller1.Username = null;
+
         }
 
         private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
         {
 
         }
+
     }
 }
