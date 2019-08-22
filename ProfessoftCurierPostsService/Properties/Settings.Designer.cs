@@ -26,9 +26,9 @@ namespace ProfessoftCurierPostsService.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DT-05\\MSSQL2014")]
-        public string SQLServername {
+        public string SQLServerName {
             get {
-                return ((string)(this["SQLServername"]));
+                return ((string)(this["SQLServerName"]));
             }
         }
         
@@ -56,15 +56,6 @@ namespace ProfessoftCurierPostsService.Properties {
         public string SQLPassword {
             get {
                 return ((string)(this["SQLPassword"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SQLKey {
-            get {
-                return ((string)(this["SQLKey"]));
             }
         }
         
@@ -115,22 +106,73 @@ namespace ProfessoftCurierPostsService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\temp")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\temp\\ProCurierPostLog.log")]
         public string LogFilePath {
             get {
                 return ((string)(this["LogFilePath"]));
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Ustawienie {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://tracktrace.dpd.com.pl/findPackage")]
+        public string DPDFindPackageUrl {
             get {
-                return ((string)(this["Ustawienie"]));
+                return ((string)(this["DPDFindPackageUrl"]));
             }
-            set {
-                this["Ustawienie"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DATADOSTAWY")]
+        public string AtributeName {
+            get {
+                return ((string)(this["AtributeName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DPD")]
+        public string DescriptionPrefix {
+            get {
+                return ((string)(this["DescriptionPrefix"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ProfessoftServicesLog")]
+        public string LogEventName {
+            get {
+                return ((string)(this["LogEventName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ProCurierPosts")]
+        public string SourceEventName {
+            get {
+                return ((string)(this["SourceEventName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int RefreshTimeInMin {
+            get {
+                return ((int)(this["RefreshTimeInMin"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstRunImmediately {
+            get {
+                return ((bool)(this["FirstRunImmediately"]));
             }
         }
     }

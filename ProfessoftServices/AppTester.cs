@@ -42,11 +42,18 @@ namespace ProfessoftServices
                 ProfessoftApps.Optima optima = new ProfessoftApps.Optima(optimaPath);
                 logFile.Write("Stworzono obiekt AppOptima");
 
-                string operOptima = "OPERATOR";
-                string passOptima = "PASSWORD";
-                string companyOptima = "COMPANY";
+                string operOptima = "PROADMIN";
+                string passOptima = "Profes45";
+                string companyOptima = "Dotykačka Polska sp.z o.o.";
+
+                Console.WriteLine(optima.GetState());
+
                 optima.Login(operOptima, passOptima, companyOptima);
                 logFile.Write("Zalogowano do ERP Optima");
+
+                Console.WriteLine(optima.GetState());
+
+                /*
 
                 string contractorName = "Testowy trzeci";
                 CDNHeal.Kontrahent kontrahent;
@@ -103,6 +110,8 @@ namespace ProfessoftServices
                 optima.GetContractorCollection().Delete(kontrahent);
                 logFile.Write("Usunięto kontrahenta: " + contractorName);
 
+                */
+
                 try
                 {
                     optima.Save();
@@ -115,10 +124,13 @@ namespace ProfessoftServices
                     throw new Exception(e.Message);
                 }
 
+                
+
+
                 optima.LogOut();
                 logFile.Write("Wylogowano z ERP Optima");
 
-
+                Console.WriteLine(optima.GetState());
 
                 //=======================================================================================================================//
 

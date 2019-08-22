@@ -1,142 +1,90 @@
 ﻿using System;
 using System.Data;
+using System.Threading;
 
 namespace ProfessoftCurierPostsService
 {
     class App
     {
-        protected readonly string atrName = "DATADOSTAWY";
-        protected readonly string descriptionPrefix = "DPD";
-
-        protected readonly string sqlCmd = "";
-
         protected ProfessoftApps.LogEvent logEvent;
         protected ProfessoftApps.LogFile logFile;
-        protected ProfessoftApps.Optima optima;
-        protected ProfessoftApps.SQL sql;
 
         public App()
         {
             try
             {
-                logFile = new ProfessoftApps.LogFile(Properties.Settings.Default.LogFilePath, "ProCurierPosts");
+                logFile = new ProfessoftApps.LogFile(Properties.Settings.Default.LogFilePath);
                 logFile.Write("Stworzono obiekt logFile");
-                logEvent = new ProfessoftApps.LogEvent("ProCurierPostsService");
+                logEvent = new ProfessoftApps.LogEvent(Properties.Settings.Default.SourceEventName, Properties.Settings.Default.LogEventName);
                 logFile.Write("Stworzono obiekt logEvent");
+
             }
             catch (Exception e)
             {
                 throw new Exception("Krytyczny błąd!" + e.Message);
             }
-
         }
 
         public void Run()
         {
             try
             {
-                optima = new ProfessoftApps.Optima(Properties.Settings.Default.OptimaPath);
-                logFile.Write("Stworzono obiekt AppOptima");
-
-                sql = new ProfessoftApps.SQL(Properties.Settings.Default.SQLServername,
-                                                Properties.Settings.Default.SQLDatabase,
-                                                Properties.Settings.Default.SQLUsername,
-                                                Properties.Settings.Default.SQLPassword,
-                                                Properties.Settings.Default.SQLNT,
-                                                Properties.Settings.Default.SQLKey);
-                logFile.Write("Stworzono obiekt AppSQL");
-
+                DataModule module = new DataModule(logFile);
                 try
                 {
-                    optima.Login(Properties.Settings.Default.OptimaUsername,
-                                Properties.Settings.Default.OptimaPassword,
-                                Properties.Settings.Default.OptimaCompany);
-                    logFile.Write("Zalogowano do ERP Optima");
+                    DataTable deliveriesIds = module.GetDeliveriesDataTable(); //@@@@@@@@@@@@@@@@@@@@@ przy instalacji wywalić człon 'Mock'
+                    logFile.Write("Otrzymano: " + deliveriesIds.Rows.Count + " przesyłek do przetworzenia");
 
-                    try
+                    string deliveryId;
+                    DataTable documentIds;
+                    foreach (DataRow row in deliveriesIds.Rows)
                     {
-                        sql.Connect();
-                        logFile.Write("Nawiązano połączenie z serwerem SQL");
-
+                        deliveryId = row.Field<int>(Extensions.ColumnNameDelivery).ToString();
                         try
                         {
-                            //DataTable dt = sql.Execute(sqlCmd);
-                            DataTable dt = GetMockData();
-                            logFile.Write("Otrzymano: " + dt.Rows.Count + " przesyłek do przetworzenia");
-
-                            foreach (DataRow row in dt.Rows)
+                            try
                             {
-                                try
-                                {
-                                    Parcel parcel = new Parcel(row.Field<string>("SZLID"), row.Field<string>("TrNID"), optima, sql, logFile);
-                                    parcel.Valid();
-                                    parcel.WaitForValidation();
-                                    parcel.UpdateDocumentDateAtribute(descriptionPrefix, atrName);
-
-                                    optima.Save();
-                                    logFile.Write("Zapisano zmiany w ERP Optima");
-                                }
-                                catch (Exception e)
-                                {
-                                    throw new Exception("Wystąpił błąd dla przesyłki o ID: " + row.Field<string>("SZLID") + " " + e.Message);
-                                }
+                                documentIds = module.GetWZDocumentsDataTable(deliveryId); //@@@@@@@@@@@@@@@@@@@@@@ przy instalacji wywalić człon 'Mock'
                             }
+                            catch(Exception)
+                            {
+                                module.UpdateSenditExtTable(deliveryId, States.Do_Sprawdzenia);
+                                continue;
+                            }
+                            Delivery delivery = new Delivery(deliveryId, logFile);
+                            delivery.SetPackages(module.GetPackagesDataTable(deliveryId));  //@@@@@@@@@@@@@@@@@ przy instalacji wywalić człon 'Mock'
+                            delivery.Valid();
+                            delivery.WaitForValidation();
+
+                            foreach(DataRow r in documentIds.Rows)
+                            {
+                                module.UpdateDocumentDateAtribute(r.Field<int>(Extensions.ColumnNameDocument).ToString(), 
+                                                                                delivery.date, 
+                                                                                delivery.number, 
+                                                                                delivery.state);
+                            }
+
+                             module.UpdateSenditExtTable(deliveryId, delivery.state); //@@@@@@@@@@@@@@@@@@@@@ przy instalacji odkomentować
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
-                            sql.Disconnect();
-                            logFile.Write("Zamknięto połączenie z serwerem SQL");
-                            throw new Exception(e.Message);
+                            throw new Exception("Wystąpił błąd dla przesyłki o ID: " + deliveryId + " " + e.Message);
                         }
-                        sql.Disconnect();
-                        logFile.Write("Zamknięto połączenie z serwerem SQL");
                     }
-                    catch(Exception e)
-                    {
-                        optima.LogOut();
-                        logFile.Write("Wylogowano z ERP Optima");
-                        throw new Exception(e.Message);
-                    }
-                    optima.LogOut();
-                    logFile.Write("Wylogowano z ERP Optima");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    optima = null;
-                    sql = null;
+                    module.Dispose();
                     throw new Exception(e.Message);
                 }
+                module.Dispose();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logFile.Write(e.Message);
                 logEvent.Write(e.Message);
             }
             logFile.Write(" ");
-        }
-
-        private DataTable GetMockData()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("SZLID");
-            dt.Columns.Add("TrNID");
-
-            DataRow r1 = dt.NewRow();
-            r1["SZLID"] = 1;
-            r1["TrNID"] = 148;
-            dt.Rows.Add(r1);
-
-            DataRow r2 = dt.NewRow();
-            r2["SZLID"] = 2;
-            r2["TrNID"] = 160;
-            dt.Rows.Add(r2);
-
-            DataRow r3 = dt.NewRow();
-            r3["SZLID"] = 3;
-            r3["TrNID"] = 161;
-            dt.Rows.Add(r3);
-
-            return dt;
         }
     }
 }

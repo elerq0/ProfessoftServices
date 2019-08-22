@@ -1,19 +1,20 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 
 namespace ProfessoftApps
 {
     public class LogFile
     {
         protected string path;
-        public LogFile(string path, string fileName)
+        public LogFile(string path)
         {
             try
             {
-                this.path = path + @"\" + fileName + ".txt";
+                this.path = path;
                 if (!File.Exists(this.path))
                 {
-                    File.Create(this.path);
+                    File.Create(this.path).Close();
                 }
             }
             catch (Exception e)

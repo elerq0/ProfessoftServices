@@ -48,13 +48,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Comarch ERP Optima\adodb.dll</HintPath>
-    </Reference>
     <Reference Include="App">
-      <HintPath>..\App\bin\Debug\App.dll</HintPath>
+      <HintPath>..\App\bin\Release\App.dll</HintPath>
     </Reference>
     <Reference Include="ICDNLib, Version=2019.2.1.965, Culture=neutral, PublicKeyToken=5179454a0b814fab, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -75,7 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="Parcel.cs" />
+    <Compile Include="DataModule.cs" />
+    <Compile Include="Delivery.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="ProCurierPostsService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -95,12 +92,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="States.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,9 @@
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

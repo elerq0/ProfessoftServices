@@ -6,20 +6,22 @@ namespace ProfessoftApps
     {
         protected CDNBase.Application application = null;
         protected CDNBase.ILogin login = null;
-        protected CDNBase.AdoSession session = null;
+        private OptimaSession optimaSession;
         protected string path;
 
         public int operatorID;
         public string operatorKod;
         public Boolean connected;
+        private Boolean sessionRefresh;
 
-        public Optima(string path)
+        public Optima(string path, Boolean sessionRefresh)
         {
             this.path = path;
             connected = false;
+            this.sessionRefresh = sessionRefresh;
         }
 
-        public void Login(string oper, string pass, string company)
+        public Boolean Login(string oper, string pass, string company)
         {
             object[] hPar = new object[] {1, // Księga_podatkowa
                                           0, // Księga_handlowa
@@ -40,52 +42,68 @@ namespace ProfessoftApps
                                           1, // Handel_plus
                                           0};// CRM_plus
 
-            try
+            if (GetState() == 0)
             {
-                RefreshEnvironmentPath();
-                application = new CDNBase.Application();                
-                application.LockApp(513, 5000, null, null, null, null);
-                login = application.Login(oper, pass, company, hPar[0], hPar[1], hPar[2], hPar[3], hPar[4], hPar[5], hPar[6], hPar[7], hPar[8], hPar[9], hPar[10], hPar[11], hPar[12], hPar[13], hPar[14], hPar[15], hPar[16], hPar[17]);
-                session = login.CreateSession();
-                operatorID = login.OperatorParam.ID;
-                operatorKod = login.OperatorParam.Akronim;
-                connected = true;
+                try
+                {
+                    RefreshEnvironmentPath();
+                    application = new CDNBase.Application();
+                    application.LockApp(513, 5000, null, null, null, null);
+                    login = application.Login(oper, pass, company, hPar[0], hPar[1], hPar[2], hPar[3], hPar[4], hPar[5], hPar[6], hPar[7], hPar[8], hPar[9], hPar[10], hPar[11], hPar[12], hPar[13], hPar[14], hPar[15], hPar[16], hPar[17]);
+                    optimaSession = new OptimaSession(login, sessionRefresh);
+                    operatorID = login.OperatorParam.ID;
+                    operatorKod = login.OperatorParam.Akronim;
+                    connected = true;
+                }
+                catch (Exception e)
+                {
+                    application.UnlockApp();
+                    connected = false;
+                    throw new Exception("Wystąpił błąd przy logowaniu do ERP Optima: " + e.Message);
+                }
+                return true;
             }
-            catch (Exception e)
+            else
             {
-                application.UnlockApp();
-                connected = false;
-                throw new Exception("Wystąpił błąd przy logowaniu do ERP Optima: " + e.Message);
+                return false;
             }
         }
 
         public void LogOut()
         {
-            try
+            if (GetState() != 0)
             {
-                RefreshEnvironmentPath();
-                login = null;
-                application.UnlockApp();
-                application = null;
-                session = null;
-                connected = false;
+                try
+                {
+                    RefreshEnvironmentPath();
+                    application.UnlockApp();
+                    connected = false;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Wystąpił błąd przy wylogowywaniu z ERP Optima: " + e.Message);
+                }
             }
-            catch (Exception e)
-            {
-                throw new Exception("Wystąpił błąd przy wylogowywaniu z ERP Optima: " + e.Message);
-            }
+        }
+
+        public int GetState()
+        {
+            if (application == null || application.HASPConnection == null)
+                return 0;
+            else
+                return application.HASPConnection.State;
         }
 
         public void Save()
         {
-            session.Save();
+            optimaSession.Save();
         }
 
         public CDNBase.ICollection GetContractorCollection()
         {
             try
             {
-                return session.CreateObject("CDN.Kontrahenci", null);
+                return optimaSession.session.CreateObject("CDN.Kontrahenci", null);
             }
             catch (Exception)
             {
@@ -97,7 +115,7 @@ namespace ProfessoftApps
         {
             try
             {
-                return session.CreateObject("CDN.Kontrahenci").Item("Knt_Kod = " + code);
+                return optimaSession.session.CreateObject("CDN.Kontrahenci").Item("Knt_Kod = " + code);
             }
             catch (Exception)
             {
@@ -106,37 +124,86 @@ namespace ProfessoftApps
 
         }
 
+        public CDNHlmn.IDokumentHaMag CreateNewDocumentHaMag()
+        {
+            return optimaSession.session.CreateObject("CDN.DokumentyHaMag").AddNew();
+        }
+
+        public CDNHlmn.Magazyn GetWarehouseBySymbol(string mag_symbol)
+        {
+            try
+            {
+                return optimaSession.session.CreateObject("CDN.Magazyny").Item("Mag_Symbol = '" + mag_symbol + "'");
+            }
+            catch (Exception)
+            {
+                throw new Exception("Nie znaleziono magazynu o symbolu: " + mag_symbol);
+            }
+        }
+
+
         public CDNHlmn.IDokumentHaMag GetDocumentHaMagByID(string trNID)
         {
             try
             {
-                return session.CreateObject("CDN.DokumentyHaMag").Item("TrN_TrNId = " + trNID);
+                return optimaSession.session.CreateObject("CDN.DokumentyHaMag").Item("TrN_TrNId = " + trNID);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new Exception("Nie znaleziono dokkumentu HaMag o id: " + trNID);
+            }
+        }
+
+        public CDNTwrb1.ITowar GetGoodByCode(string twr_code)
+        {
+            try
+            {
+                return optimaSession.session.CreateObject("CDN.Towary").Item("Twr_Kod = '" + twr_code + "'");
+            }
+            catch (Exception)
+            {
+                throw new Exception("Nie znaleziono towaru o kodzie: " + twr_code);
+            }
+        }
+
+        public CDNTwrb1.IDefAtrybut GetDefAtribute(string code, int type)
+        {
+            try
+            {
+                return optimaSession.session.CreateObject("CDN.DefAtrybuty").Item("DeA_Kod = '" + code + "' and DeA_Typ = " + type);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Nie znaleziono definicji atrybutu o kodzie: " + code);
             }
         }
 
         public void AddOrEditAtributeDocumentHaMag(CDNHlmn.IDokumentHaMag doc, string code, string value)
         {
             Boolean found = false;
-            foreach(CDNTwrb1.IDokAtrybut atr in doc.Atrybuty)
+            try
             {
-                if(atr.Kod.Equals(code))
+                foreach (CDNTwrb1.IDokAtrybut atr in doc.Atrybuty)
                 {
-                    atr.Wartosc = value;
-                    found = true;
-                    break;
+                    if (atr.Kod.Equals(code))
+                    {
+                        atr.Wartosc = value;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    CDNTwrb1.IDefAtrybut defAtrybut = GetDefAtribute(code, 4);
+                    CDNTwrb1.IDokAtrybut atrybut = doc.Atrybuty.AddNew();
+                    atrybut.DeAID = defAtrybut.ID;
+                    atrybut.Wartosc = value;
                 }
             }
-
-            if(!found)
+            catch (Exception e)
             {
-                CDNTwrb1.IDefAtrybut defAtrybut = session.CreateObject("CDN.DefAtrybuty").Item("DeA_Kod = '" + code + "' and DeA_Typ = 4");
-                CDNTwrb1.IDokAtrybut atrybut = doc.Atrybuty.AddNew();
-                atrybut.DeAID = defAtrybut.ID;
-                atrybut.Wartosc = value;
+                throw new Exception("Błąd przy ustawianiu atrybutu: " + code + " = '" + value + "', " + e.Message);
             }
         }
 
@@ -144,15 +211,22 @@ namespace ProfessoftApps
         {
             try
             {
-                CDNTwrb1.DefAtrybut defAtrybut = session.CreateObject("CDN.DefAtrybuty", null).AddNew();
-                defAtrybut.Kod = name;
-                defAtrybut.Nazwa = name;
-                defAtrybut.Format = format;
-                defAtrybut.Typ = type;
+                GetDefAtribute(name, type);
             }
-            catch(Exception e)
+            catch (Exception)
             {
-                throw new Exception("Błąd przy tworzeniu definicji atrybutu " + e.Message);
+                try
+                {
+                    CDNTwrb1.DefAtrybut defAtrybut = optimaSession.session.CreateObject("CDN.DefAtrybuty", null).AddNew();
+                    defAtrybut.Kod = name;
+                    defAtrybut.Nazwa = name;
+                    defAtrybut.Format = format;
+                    defAtrybut.Typ = type;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Błąd przy tworzeniu definicji atrybutu " + e.Message);
+                }
             }
         }
 

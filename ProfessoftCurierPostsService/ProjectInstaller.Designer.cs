@@ -39,7 +39,8 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.DisplayName = "PRO_Przesyłki_Kurierskie";
-            this.serviceInstaller1.ServiceName = "ProCurierPostsService";
+            this.serviceInstaller1.ServiceName = "PRO_Przesyłki_Kurierskie";
+            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
             // 

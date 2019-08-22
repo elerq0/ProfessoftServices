@@ -7,35 +7,41 @@ namespace ProfessoftApps
     public class SQL
     {
         protected SqlConnection cnn;
-        public Boolean connected;
-        public SQL(string servername, string database, string username, string password, Boolean NT, string key)
+        public SQL(string servername, string database, string username, string password, Boolean NT)
         {
             if (!NT)
                 cnn = new SqlConnection("Data Source = " + servername + "; Initial Catalog = " + database + "; User ID = " + username + "; Password = " + password);
             else
                 cnn = new SqlConnection("Data Source = " + servername + "; Initial Catalog = " + database + "; Integrated Security=true;");
-            connected = false;
         }
 
-        public void Connect()
+        public Boolean Connect()
         {
+
             try
             {
-                cnn.Open();
-                connected = true;
+                if ((int)cnn.State == 0)
+                {
+                    cnn.Open();
+                    return true;
+                }
+                return false;
             }
             catch (SqlException)
             {
                 throw new Exception("Nie można nawiązać połączenia z SQL: nie można odnaleźć serwera lub jest on niedostępny.");
             }
+
         }
 
         public void Disconnect()
         {
             try
             {
-                cnn.Close();
-                connected = false;
+                if ((int)cnn.State == 1)
+                {
+                    cnn.Close();
+                }
             }
             catch (SqlException)
             {

@@ -26,6 +26,26 @@ namespace ProfessoftApps
             }
         }
 
+        public LogEvent(string source, string logName)
+        {
+            try
+            {
+                if (!System.Diagnostics.EventLog.SourceExists(source))
+                {
+                    System.Diagnostics.EventLog.CreateEventSource(source, logName);
+                }
+                eventLog = new System.Diagnostics.EventLog
+                {
+                    Source = source,
+                    Log = logName
+                };
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Wystąpił błąd przy tworzeniu dziennika zdarzeń: " + source + ", " + e.Message);
+            }
+        }
+
         public void Write(string msg)
         {
             try

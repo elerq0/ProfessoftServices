@@ -15,7 +15,11 @@ namespace ProfessoftCurierPostsService
         protected override void OnStart(string[] args)
         {
             t = new Timer();
-            t.Interval = 10000; // 86400000; // 1 day
+            if (Properties.Settings.Default.FirstRunImmediately)
+                t.Interval = 10000;
+            else
+                t.Interval = Properties.Settings.Default.RefreshTimeInMin * 1000;
+
             t.Elapsed += new ElapsedEventHandler(this.OnTimer);
             t.Start();
         }
@@ -28,6 +32,7 @@ namespace ProfessoftCurierPostsService
             app.Run();
 
             t.Enabled = true;
+            t.Interval = Properties.Settings.Default.RefreshTimeInMin * 60000;
         }
 
         protected override void OnStop()
