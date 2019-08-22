@@ -71,10 +71,35 @@ namespace ProfessoftCurierPostsService
                     response = await GetResponse(row.Field<string>(ColumnNamePackage));
                     dateString = RegexGetDateString(row.Field<string>(ColumnNamePackage), response, "Przesyłka doręczona");
 
-                    if (firstPackageDateString.Equals(string.Empty) && !dateString.Equals(string.Empty))
-                    { // pierwsze użycie i pierwsze przesyłka dostarczona
+                    if(firstPackageDateString.Equals(string.Empty) && !dateString.Equals(string.Empty))
+                    { // pierwsze użycie, data nie jest pusta
                         firstPackageDateString = dateString;
-
+                        continue;
+                    }
+                    else if (!firstPackageDateString.Equals(string.Empty) && !dateString.Equals(string.Empty))
+                    { // kolejne użycie, data nie jest pusta
+                        continue;
+                    }
+                    else if (dateString.Equals(string.Empty))
+                    { // data pusta
+                        dateString = RegexGetDateString(row.Field<string>(ColumnNamePackage), response, "Przesyłka anulowana");
+                        if (!dateString.Equals(string.Empty))
+                        {
+                            state = States.Nieaktywny;
+                            date = DateTime.Parse(dateString);
+                        }
+                        else
+                        {
+                            state = States.Nieprzetworzony;
+                        }
+                        number = string.Empty;
+                        break;
+                    }
+                    
+                    /*
+                    if (firstPackageDateString.Equals(string.Empty) && !dateString.Equals(string.Empty))
+                    { // pierwsze użycie i pierwsza paczka dostarczona
+                        firstPackageDateString = dateString;
                     }
                     else if (!firstPackageDateString.Equals(dateString) || firstPackageDateString.Equals(string.Empty))
                     { // któraś przesyłka jest róźna od pierwszej lub pierwsza przesyłka nie była dostarczna
@@ -91,6 +116,7 @@ namespace ProfessoftCurierPostsService
                         number = string.Empty;
                         break;
                     }
+                    */
                 }
                 catch(Exception e)
                 {

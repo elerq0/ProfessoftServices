@@ -10,6 +10,8 @@ namespace ProfessoftCurierPostsService
         protected ProfessoftApps.Optima optima;
         protected ProfessoftApps.SQL sql;
 
+        private readonly Boolean debug = false;
+
         public DataModule(ProfessoftApps.LogFile logFile)
         {
             this.logFile = logFile;
@@ -35,7 +37,7 @@ namespace ProfessoftCurierPostsService
 
         private void OptimaConnect()
         {
-            if(optima.Login(Properties.Settings.Default.OptimaUsername,
+            if (optima.Login(Properties.Settings.Default.OptimaUsername,
                                 Properties.Settings.Default.OptimaPassword,
                                 Properties.Settings.Default.OptimaCompany))
                 logFile.Write("Zalogowano do ERP Optima");
@@ -55,7 +57,7 @@ namespace ProfessoftCurierPostsService
 
         private void SqlConnect()
         {
-            if(sql.Connect())
+            if (sql.Connect())
                 logFile.Write("Nawiązano połączenie z serwerem SQL");
         }
 
@@ -76,6 +78,9 @@ namespace ProfessoftCurierPostsService
 
         public DataTable GetDeliveriesDataTable()
         {
+            if (debug)
+                return GetDeliveriesDataTableMock();
+
             DataTable dt;
             try
             {
@@ -105,6 +110,9 @@ namespace ProfessoftCurierPostsService
 
         public DataTable GetPackagesDataTable(string deliveryId)
         {
+            if (debug)
+                return GetPackagesDataTableMock(deliveryId);
+
             DataTable dt;
             try
             {
@@ -123,10 +131,23 @@ namespace ProfessoftCurierPostsService
         {
             DataTable dt = new DataTable();
             dt.Columns.Add(Extensions.ColumnNamePackage);
-            dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561270U");
-            dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561271U");
-            dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561272U");
-            dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561273U");
+            switch (deliveryId)
+            {
+                case "1":
+                    dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561270U");
+                    dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561271U");
+                    dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561272U");
+                    dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000160561273U");
+                    break;
+                case "2":
+                    dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000169596774U");
+                    dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000169596775U");
+                    break;
+                case "3":
+                    dt.Rows.Add(dt.NewRow()[Extensions.ColumnNamePackage] = @"0000169835189U");
+                    break;
+            }
+
 
             logFile.Write("Stworzono listę paczek dla przesyłki o id: " + deliveryId);
             return dt;
@@ -134,6 +155,9 @@ namespace ProfessoftCurierPostsService
 
         public DataTable GetWZDocumentsDataTable(string deliveryId)
         {
+            if (debug)
+                return GetWZDocumentsDataTableMock(deliveryId);
+
             DataTable dt;
             try
             {
@@ -185,6 +209,9 @@ namespace ProfessoftCurierPostsService
 
         public void UpdateSenditExtTable(string deliveryId, States state)
         {
+            if (debug)
+                return;
+
             try
             {
                 SqlConnect();
