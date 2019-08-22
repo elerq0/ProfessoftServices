@@ -95,28 +95,6 @@ namespace ProfessoftCurierPostsService
                         number = string.Empty;
                         break;
                     }
-                    
-                    /*
-                    if (firstPackageDateString.Equals(string.Empty) && !dateString.Equals(string.Empty))
-                    { // pierwsze użycie i pierwsza paczka dostarczona
-                        firstPackageDateString = dateString;
-                    }
-                    else if (!firstPackageDateString.Equals(dateString) || firstPackageDateString.Equals(string.Empty))
-                    { // któraś przesyłka jest róźna od pierwszej lub pierwsza przesyłka nie była dostarczna
-                        dateString = RegexGetDateString(row.Field<string>(ColumnNamePackage), response, "Przesyłka anulowana");
-                        if (!dateString.Equals(string.Empty))
-                        {
-                            state = States.Nieaktywny;
-                            date = DateTime.Parse(dateString);
-                        }
-                        else
-                        {
-                            state = States.Nieprzetworzony;
-                        }
-                        number = string.Empty;
-                        break;
-                    }
-                    */
                 }
                 catch(Exception e)
                 {

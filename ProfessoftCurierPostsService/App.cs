@@ -32,7 +32,7 @@ namespace ProfessoftCurierPostsService
                 DataModule module = new DataModule(logFile);
                 try
                 {
-                    DataTable deliveriesIds = module.GetDeliveriesDataTable(); //@@@@@@@@@@@@@@@@@@@@@ przy instalacji wywalić człon 'Mock'
+                    DataTable deliveriesIds = module.GetDeliveriesDataTable();
                     logFile.Write("Otrzymano: " + deliveriesIds.Rows.Count + " przesyłek do przetworzenia");
 
                     string deliveryId;
@@ -44,7 +44,7 @@ namespace ProfessoftCurierPostsService
                         {
                             try
                             {
-                                documentIds = module.GetWZDocumentsDataTable(deliveryId); //@@@@@@@@@@@@@@@@@@@@@@ przy instalacji wywalić człon 'Mock'
+                                documentIds = module.GetWZDocumentsDataTable(deliveryId);
                             }
                             catch(Exception)
                             {
@@ -52,7 +52,7 @@ namespace ProfessoftCurierPostsService
                                 continue;
                             }
                             Delivery delivery = new Delivery(deliveryId, logFile);
-                            delivery.SetPackages(module.GetPackagesDataTable(deliveryId));  //@@@@@@@@@@@@@@@@@ przy instalacji wywalić człon 'Mock'
+                            delivery.SetPackages(module.GetPackagesDataTable(deliveryId));
                             delivery.Valid();
                             delivery.WaitForValidation();
 
@@ -64,7 +64,7 @@ namespace ProfessoftCurierPostsService
                                                                                 delivery.state);
                             }
 
-                             module.UpdateSenditExtTable(deliveryId, delivery.state); //@@@@@@@@@@@@@@@@@@@@@ przy instalacji odkomentować
+                             module.UpdateSenditExtTable(deliveryId, delivery.state);
                         }
                         catch (Exception e)
                         {
