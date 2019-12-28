@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProfessoftCurierPostsService.Properties {
+namespace Tester.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -41,138 +41,87 @@ namespace ProfessoftCurierPostsService.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Lukasz")]
         public string SQLUsername {
             get {
                 return ((string)(this["SQLUsername"]));
             }
+            set {
+                this["SQLUsername"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Luk5904%")]
+        [global::System.Configuration.DefaultSettingValueAttribute("qwerty0")]
         public string SQLPassword {
             get {
                 return ((string)(this["SQLPassword"]));
             }
+            set {
+                this["SQLPassword"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SQLNT {
             get {
                 return ((bool)(this["SQLNT"]));
             }
+            set {
+                this["SQLNT"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("PROADMIN")]
         public string OptimaUsername {
             get {
                 return ((string)(this["OptimaUsername"]));
             }
+            set {
+                this["OptimaUsername"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Profes45")]
         public string OptimaPassword {
             get {
                 return ((string)(this["OptimaPassword"]));
             }
+            set {
+                this["OptimaPassword"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Dotykačka Polska sp.z o.o.")]
         public string OptimaCompany {
             get {
                 return ((string)(this["OptimaCompany"]));
             }
+            set {
+                this["OptimaCompany"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Comarch ERP Optima")]
         public string OptimaPath {
             get {
                 return ((string)(this["OptimaPath"]));
             }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\temp\\ProCurierPostLog.log")]
-        public string LogFilePath {
-            get {
-                return ((string)(this["LogFilePath"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://tracktrace.dpd.com.pl/findPackage")]
-        public string DPDFindPackageUrl {
-            get {
-                return ((string)(this["DPDFindPackageUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DATADOSTAWY")]
-        public string AtributeName {
-            get {
-                return ((string)(this["AtributeName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DPD")]
-        public string DescriptionPrefix {
-            get {
-                return ((string)(this["DescriptionPrefix"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ProfessoftServicesLog")]
-        public string LogEventName {
-            get {
-                return ((string)(this["LogEventName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ProCurierPosts")]
-        public string SourceEventName {
-            get {
-                return ((string)(this["SourceEventName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public int RefreshTimeInMin {
-            get {
-                return ((int)(this["RefreshTimeInMin"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FirstRunImmediately {
-            get {
-                return ((bool)(this["FirstRunImmediately"]));
+            set {
+                this["OptimaPath"] = value;
             }
         }
     }

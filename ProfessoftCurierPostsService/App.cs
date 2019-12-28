@@ -6,21 +6,30 @@ namespace ProfessoftCurierPostsService
 {
     class App
     {
-        protected ProfessoftApps.LogEvent logEvent;
-        protected ProfessoftApps.LogFile logFile;
+        protected PROLog.LogEvent logEvent;
+        protected PROLog.LogFile logFile;
 
         public App()
         {
             try
             {
-                logFile = new ProfessoftApps.LogFile(Properties.Settings.Default.LogFilePath);
+                logFile = new PROLog.LogFile(Properties.Settings.Default.LogFilePath);
                 logFile.Write("Stworzono obiekt logFile");
-                logEvent = new ProfessoftApps.LogEvent(Properties.Settings.Default.SourceEventName, Properties.Settings.Default.LogEventName);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Krytyczny błąd!" + e.Message);
+            }
+
+            try
+            {
+                logEvent = new PROLog.LogEvent(Properties.Settings.Default.SourceEventName, Properties.Settings.Default.LogEventName);
                 logFile.Write("Stworzono obiekt logEvent");
 
             }
             catch (Exception e)
             {
+                logFile.Write(e.Message);
                 throw new Exception("Krytyczny błąd!" + e.Message);
             }
         }
@@ -46,7 +55,7 @@ namespace ProfessoftCurierPostsService
                             {
                                 documentIds = module.GetWZDocumentsDataTable(deliveryId);
                             }
-                            catch(Exception)
+                            catch (Exception)
                             {
                                 module.UpdateSenditExtTable(deliveryId, States.Do_Sprawdzenia);
                                 continue;
@@ -56,15 +65,15 @@ namespace ProfessoftCurierPostsService
                             delivery.Valid();
                             delivery.WaitForValidation();
 
-                            foreach(DataRow r in documentIds.Rows)
+                            foreach (DataRow r in documentIds.Rows)
                             {
-                                module.UpdateDocumentDateAtribute(r.Field<int>(Extensions.ColumnNameDocument).ToString(), 
-                                                                                delivery.date, 
-                                                                                delivery.number, 
+                                module.UpdateDocumentDateAtribute(r.Field<int>(Extensions.ColumnNameDocument).ToString(),
+                                                                                delivery.date,
+                                                                                delivery.number,
                                                                                 delivery.state);
                             }
 
-                             module.UpdateSenditExtTable(deliveryId, delivery.state);
+                            module.UpdateSenditExtTable(deliveryId, delivery.state);
                         }
                         catch (Exception e)
                         {

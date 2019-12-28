@@ -6,21 +6,21 @@ namespace ProfessoftCurierPostsService
 
     class DataModule
     {
-        protected ProfessoftApps.LogFile logFile;
-        protected ProfessoftApps.Optima optima;
-        protected ProfessoftApps.SQL sql;
+        protected PROLog.LogFile logFile;
+        protected PROOptima.Optima optima;
+        protected PROSql.SQL sql;
 
         private readonly Boolean debug = false;
 
-        public DataModule(ProfessoftApps.LogFile logFile)
+        public DataModule(PROLog.LogFile logFile)
         {
             this.logFile = logFile;
             try
             {
-                optima = new ProfessoftApps.Optima(Properties.Settings.Default.OptimaPath, true);
+                optima = new PROOptima.Optima(Properties.Settings.Default.OptimaPath, true);
                 logFile.Write("Stworzono obiekt AppOptima");
 
-                sql = new ProfessoftApps.SQL(Properties.Settings.Default.SQLServerName,
+                sql = new PROSql.SQL(Properties.Settings.Default.SQLServerName,
                                                 Properties.Settings.Default.SQLDatabase,
                                                 Properties.Settings.Default.SQLUsername,
                                                 Properties.Settings.Default.SQLPassword,
@@ -180,7 +180,7 @@ namespace ProfessoftCurierPostsService
             int t = 1;
             DataTable dt = new DataTable();
             dt.Columns.Add(Extensions.ColumnNameDocument, t.GetType());
-            dt.Rows.Add(dt.NewRow()[Extensions.ColumnNameDocument] = 160);
+            dt.Rows.Add(dt.NewRow()[Extensions.ColumnNameDocument] = 3239);
 
             return dt;
         }

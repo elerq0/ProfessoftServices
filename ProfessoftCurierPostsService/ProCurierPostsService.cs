@@ -18,7 +18,7 @@ namespace ProfessoftCurierPostsService
             if (Properties.Settings.Default.FirstRunImmediately)
                 t.Interval = 10000;
             else
-                t.Interval = Properties.Settings.Default.RefreshTimeInMin * 1000;
+                t.Interval = Properties.Settings.Default.RefreshTimeInMin * 60000;
 
             t.Elapsed += new ElapsedEventHandler(this.OnTimer);
             t.Start();

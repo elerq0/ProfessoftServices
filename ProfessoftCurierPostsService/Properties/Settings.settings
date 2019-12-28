@@ -12,7 +12,7 @@
       <Value Profile="(Default)">Lukasz</Value>
     </Setting>
     <Setting Name="SQLPassword" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">qwerty0</Value>
+      <Value Profile="(Default)">Luk5904%</Value>
     </Setting>
     <Setting Name="SQLNT" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>

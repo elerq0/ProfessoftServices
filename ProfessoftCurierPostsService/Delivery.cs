@@ -15,7 +15,7 @@ namespace ProfessoftCurierPostsService
 
         private Boolean isCompleted;
         private readonly int timeoutLimit = 100;
-        private ProfessoftApps.LogFile logFile;
+        private PROLog.LogFile logFile;
 
         private string deliveryId;
         private DataTable packagesIds;
@@ -25,7 +25,7 @@ namespace ProfessoftCurierPostsService
         public string number;
         
 
-        public Delivery(string deliveryId, ProfessoftApps.LogFile logFile)
+        public Delivery(string deliveryId, PROLog.LogFile logFile)
         {
             this.deliveryId = deliveryId;
             this.logFile = logFile;
