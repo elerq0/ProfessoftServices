@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XLTester", "XLTester\XLTester.csproj", "{E38E7AD8-E0AF-4876-893D-0859BAC4D4AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfessoftCurierPostsService", "ProfessoftCurierPostsService\ProfessoftCurierPostsService.csproj", "{FC5C0010-D2BE-4F48-A0FD-2690E9D844E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DPDService", "ProfessoftCurierPostsService\DPDService.csproj", "{FC5C0010-D2BE-4F48-A0FD-2690E9D844E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PROOptima", "PROOptima\PROOptima.csproj", "{0F2646B6-A980-45EC-BC38-D022F8B86654}"
 EndProject

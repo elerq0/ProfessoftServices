@@ -41,6 +41,7 @@
             this.serviceInstaller1.DisplayName = "PRO_Przesyłki_Kurierskie";
             this.serviceInstaller1.ServiceName = "PRO_Przesyłki_Kurierskie";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
+            this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
             // 
             // ProjectInstaller
             // 
