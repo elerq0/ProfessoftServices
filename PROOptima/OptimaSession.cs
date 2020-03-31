@@ -25,7 +25,7 @@ namespace PROOptima
         {
             session.Save();
 
-            if (sessionRefresh && refresh)
+            if (sessionRefresh)
             {
                 if (counter >= limit && refresh)
                     ForceSessionRenew();

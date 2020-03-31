@@ -102,7 +102,12 @@ namespace ProfessoftCurierPostsService
                 }
             }
 
-            if (state == States.Niezdefiniowany)
+            if(packagesIds.Rows.Count == 0)
+            {
+                state = States.Nieprzetworzony;
+                number = string.Empty;
+            }
+            else if (state == States.Niezdefiniowany)
             {
                 state = States.Przetworzony;
                 number = packagesIds.Rows[0].Field<string>(ColumnNamePackage);

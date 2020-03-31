@@ -39,7 +39,7 @@ namespace PROOptima
                                           0, // Obieg_dokumentow
                                           1, // Kasa_bank
                                           0, // Kasa_bank_plus
-                                          1, // Handel_plus
+                                          0, // Handel_plus
                                           0};// CRM_plus
 
             if (GetState() == 0)
@@ -107,6 +107,12 @@ namespace PROOptima
         public void ForceSessionRenew()
         {
             optimaSession.ForceSessionRenew();
+        }
+
+        public ADODB.Recordset Execute(string sql)
+        {
+            Object obj = new Object();
+            return optimaSession.session.Connection.Execute(sql, out obj);
         }
 
         public CDNBase.ICollection GetContractorCollection()
@@ -211,11 +217,47 @@ namespace PROOptima
             }
         }
 
+        public OP_CSRSLib.SrsZlecenie GetZlecenieByID(int SrZId)
+        {
+            try
+            {
+                return optimaSession.session.CreateObject("CDN.SrsZlecenia").Item("SrZ_SrZId = " + SrZId);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Nie znaleziono zlecenia o id [" + SrZId + "]");
+            }
+        }
+
+        public OP_CSRSLib.SrsZlecenie GetZlecenieByNumber(string number)
+        {
+            try
+            {
+                return optimaSession.session.CreateObject("CDN.SrsZlecenia").Item("SrZ_NumerPelny = '" + number + "'");
+            }
+            catch (Exception)
+            {
+                throw new Exception("Nie znaleziono zlecenia o numerze [" + number + "]");
+            }
+        }
+
         public CDNTwrb1.Towar GetGoodByCode(string twr_code)
         {
             try
             {
                 return optimaSession.session.CreateObject("CDN.Towary").Item("Twr_Kod = '" + twr_code.Replace("'", "''") + "'");
+            }
+            catch (Exception)
+            {
+                throw new Exception("Nie znaleziono towaru o kodzie: " + twr_code);
+            }
+        }
+
+        public CDNTwrb1.Towar GetGoodByCode(string twr_code, int typ)
+        {
+            try
+            {
+                return optimaSession.session.CreateObject("CDN.Towary").Item("Twr_Kod = '" + twr_code.Replace("'", "''") + "' and Twr_Typ = " + typ);
             }
             catch (Exception)
             {

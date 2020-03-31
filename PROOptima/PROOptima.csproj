@@ -132,6 +132,15 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+    <COMReference Include="op_csrsLib">
+      <Guid>{5C580BB7-F39B-44EE-95D8-31761D2CFC09}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
     <COMReference Include="OP_KALBLib">
       <Guid>{7E8BC090-85F3-470C-B8D3-71C98ECB96F9}</Guid>
       <VersionMajor>1</VersionMajor>
