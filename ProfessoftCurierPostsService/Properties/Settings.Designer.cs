@@ -25,16 +25,7 @@ namespace ProfessoftCurierPostsService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DT-05\\MSSQL2014")]
-        public string SQLServerName {
-            get {
-                return ((string)(this["SQLServerName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CDN_Dotykacka")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SQLDatabase {
             get {
                 return ((string)(this["SQLDatabase"]));
@@ -43,7 +34,7 @@ namespace ProfessoftCurierPostsService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Lukasz")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SQLUsername {
             get {
                 return ((string)(this["SQLUsername"]));
@@ -52,7 +43,7 @@ namespace ProfessoftCurierPostsService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Luk5904%")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SQLPassword {
             get {
                 return ((string)(this["SQLPassword"]));
@@ -70,7 +61,7 @@ namespace ProfessoftCurierPostsService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PROADMIN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string OptimaUsername {
             get {
                 return ((string)(this["OptimaUsername"]));
@@ -79,7 +70,7 @@ namespace ProfessoftCurierPostsService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Profes45")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string OptimaPassword {
             get {
                 return ((string)(this["OptimaPassword"]));
@@ -88,7 +79,7 @@ namespace ProfessoftCurierPostsService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dotykačka Polska sp.z o.o.")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string OptimaCompany {
             get {
                 return ((string)(this["OptimaCompany"]));
@@ -173,6 +164,15 @@ namespace ProfessoftCurierPostsService.Properties {
         public bool FirstRunImmediately {
             get {
                 return ((bool)(this["FirstRunImmediately"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SQLServerName {
+            get {
+                return ((string)(this["SQLServerName"]));
             }
         }
     }
